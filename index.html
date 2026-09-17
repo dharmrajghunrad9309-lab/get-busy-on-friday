@@ -1,109 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get Busy on Friday — Movies</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Get Busy on Friday</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:#090909;color:#fff;min-height:100vh}
-header{position:sticky;top:0;z-index:10;background:rgba(10,10,10,.94);backdrop-filter:blur(10px);border-bottom:1px solid #222}
-.nav{max-width:1200px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.logo{font-size:24px;font-weight:800;letter-spacing:.5px}.logo span{color:#e50914}
-nav button{background:none;border:0;color:#ccc;font-size:15px;margin-left:18px;cursor:pointer}nav button:hover{color:#fff}
-.hero{min-height:430px;display:flex;align-items:center;background:linear-gradient(90deg,#090909 20%,rgba(9,9,9,.78),rgba(9,9,9,.15)),linear-gradient(0deg,#090909,transparent),url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1800&q=80") center/cover}
-.hero-inner{max-width:1200px;width:100%;margin:auto;padding:60px 22px}.eyebrow{color:#e50914;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}.hero h1{font-size:clamp(40px,7vw,76px);line-height:.95;max-width:700px;margin-bottom:18px}.hero p{max-width:600px;color:#ccc;font-size:17px;line-height:1.6}
-.searchbar{max-width:1200px;margin:-28px auto 35px;padding:0 22px;position:relative}.search{width:100%;background:#151515;border:1px solid #333;border-radius:12px;color:#fff;padding:17px 18px;font-size:16px;outline:none}.search:focus{border-color:#e50914}
-.container{max-width:1200px;margin:auto;padding:0 22px 50px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:25px 0 16px}.section-head h2{font-size:26px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:25px}.filter{border:1px solid #333;background:#141414;color:#bbb;padding:9px 14px;border-radius:999px;cursor:pointer}.filter.active,.filter:hover{background:#e50914;color:#fff;border-color:#e50914}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px}.card{background:#121212;border:1px solid #222;border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}.card:hover{transform:translateY(-5px);border-color:#444}.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#222}.card-body{padding:13px}.card h3{font-size:16px;margin-bottom:7px}.meta{color:#999;font-size:13px}.rating{color:#ffd166;margin-top:8px;font-size:14px}
-.admin{display:none;background:#0f0f0f;border:1px solid #292929;border-radius:14px;padding:22px;margin-top:35px}.admin.show{display:block}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.form input,.form textarea,.form select{width:100%;background:#181818;border:1px solid #333;color:#fff;border-radius:8px;padding:12px}.form textarea{grid-column:1/-1;min-height:100px;resize:vertical}.form button{background:#e50914;color:#fff;border:0;border-radius:8px;padding:12px;font-weight:700;cursor:pointer}
-.empty{padding:45px;text-align:center;color:#888;border:1px dashed #333;border-radius:12px}
-.modal{display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.82);padding:25px;overflow:auto}.modal.show{display:flex;align-items:center;justify-content:center}.modal-box{max-width:900px;width:100%;background:#141414;border:1px solid #333;border-radius:16px;overflow:hidden}.modal-content{display:grid;grid-template-columns:250px 1fr;gap:25px;padding:25px}.modal-poster{width:100%;border-radius:10px;aspect-ratio:2/3;object-fit:cover}.close{position:absolute;right:25px;top:18px;background:#222;color:#fff;border:1px solid #444;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:20px}.modal h2{font-size:34px;margin-bottom:12px}.modal p{color:#ccc;line-height:1.7;margin-top:15px}.tags{color:#aaa;margin-top:8px}.trailer{display:inline-block;margin-top:20px;background:#e50914;color:#fff;text-decoration:none;padding:11px 17px;border-radius:8px}
-footer{text-align:center;color:#666;padding:30px;border-top:1px solid #222}
-@media(max-width:700px){.form{grid-template-columns:1fr}.modal-content{grid-template-columns:1fr}.modal-poster{max-width:220px}.hero{min-height:500px}nav button{margin-left:7px}}
+*{box-sizing:border-box}body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}header{position:sticky;top:0;background:#0d0d0df2;border-bottom:1px solid #222;z-index:5}.nav{max-width:1200px;margin:auto;padding:17px 22px;display:flex;justify-content:space-between}.logo{font-size:23px;font-weight:800}.logo b{color:#e50914}button{cursor:pointer}nav button{background:none;border:0;color:#bbb;margin-left:16px;font-size:15px}.hero{min-height:410px;padding:70px 22px;display:flex;align-items:center;background:linear-gradient(90deg,#090909 15%,#09090999,transparent),url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1800&q=80") center/cover}.hero div{max-width:1200px;margin:auto;width:100%}.hero h1{font-size:clamp(42px,7vw,76px);max-width:700px;margin:12px 0}.hero p{max-width:600px;color:#ccc;line-height:1.6}.red{color:#e50914}.container{max-width:1200px;margin:auto;padding:0 22px 50px}.search{margin:-27px 0 30px;width:100%;padding:17px;background:#161616;border:1px solid #333;border-radius:12px;color:#fff;font-size:16px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}.filter,.secondary{padding:9px 14px;border-radius:8px;border:1px solid #333;background:#151515;color:#bbb}.filter.active,.filter:hover,.primary{background:#e50914;color:#fff;border-color:#e50914}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px}.card{background:#121212;border:1px solid #242424;border-radius:12px;overflow:hidden}.card:hover{transform:translateY(-4px)}.card img{width:100%;aspect-ratio:2/3;object-fit:cover}.body{padding:12px}.body h3{margin:0 0 7px}.meta,.notice{color:#999;font-size:14px}.rating{color:#ffd166;margin-top:8px}.panel{display:none;margin-top:35px;background:#111;border:1px solid #292929;border-radius:14px;padding:22px}.panel.show{display:block}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.form input,.form textarea,.form select{width:100%;background:#191919;border:1px solid #333;color:#fff;padding:12px;border-radius:8px}.form textarea,.full{grid-column:1/-1}.form textarea{min-height:90px}.btn{border:0;border-radius:8px;padding:12px 16px;font-weight:700}.adminrow{display:flex;justify-content:space-between;border-bottom:1px solid #292929;padding:12px 0}.adminrow button{margin-left:7px}.modal{display:none;position:fixed;inset:0;background:#000c;z-index:20;align-items:center;justify-content:center;padding:25px}.modal.show{display:flex}.box{max-width:900px;width:100%;background:#151515;border:1px solid #333;border-radius:15px;padding:25px}.detail{display:grid;grid-template-columns:230px 1fr;gap:24px}.detail img{width:100%;border-radius:10px}.close{float:right;border:0;border-radius:50%;background:#292929;color:#fff;width:36px;height:36px}.trailer{display:inline-block;background:#e50914;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px}footer{text-align:center;color:#666;border-top:1px solid #222;padding:28px}@media(max-width:650px){.form,.detail{grid-template-columns:1fr}.full{grid-column:auto}}
 </style>
 </head>
 <body>
-<header><div class="nav"><div class="logo">Get Busy <span>on Friday</span></div><nav><button onclick="showHome()">Home</button><button onclick="scrollMovies()">Movies</button><button onclick="toggleAdmin()">Admin</button></nav></div></header>
-
-<section class="hero"><div class="hero-inner"><div class="eyebrow">Your cinematic destination</div><h1>Find your next movie.</h1><p>Bollywood, Hollywood, South Indian and more — discover movies, ratings, cast, trailers and details in one place.</p></div></section>
-
-<div class="searchbar"><input id="search" class="search" placeholder="Search movies..." oninput="renderMovies()"></div>
-
-<main class="container" id="movies">
-<div class="section-head"><h2>Browse Movies</h2></div>
-<div class="filters" id="filters"></div>
-<div class="grid" id="grid"></div>
-
-<section class="admin" id="admin">
-<h2 style="margin-bottom:18px">Admin — Add Movie</h2>
+<header><div class="nav"><div class="logo">Get Busy <b>on Friday</b></div><nav><button onclick="topPage()">Home</button><button onclick="moviesTop()">Movies</button><button onclick="openAdmin()">Admin</button></nav></div></header>
+<section class="hero"><div><div class="red">YOUR CINEMATIC DESTINATION</div><h1>Find your next movie.</h1><p>Bollywood, Hollywood, South Indian and world cinema — movie details, ratings and trailers in one place.</p></div></section>
+<main class="container" id="moviesSection">
+<input id="search" class="search" placeholder="Search movies..." oninput="renderMovies()">
+<div class="filters" id="filters"></div><div class="grid" id="grid"></div>
+<section class="panel" id="adminPanel">
+<div id="loginBox"><h2>🔐 Admin Login</h2><p class="notice">Only your authorized Supabase admin account can manage movies.</p><div class="form" style="grid-template-columns:1fr"><input id="email" type="email" placeholder="Admin email"><input id="password" type="password" placeholder="Password"><button class="btn primary" onclick="login()">Login</button></div><p id="loginMsg" class="notice"></p></div>
+<div id="dashboard" style="display:none"><div style="display:flex;justify-content:space-between"><h2>🎬 Admin Dashboard</h2><button class="btn secondary" onclick="logout()">Logout</button></div><p id="adminMsg" class="notice"></p>
 <div class="form">
-<input id="name" placeholder="Movie name">
-<input id="year" type="number" placeholder="Release year">
-<select id="category"><option>Bollywood</option><option>Hollywood</option><option>South Indian</option><option>Other</option></select>
-<input id="genre" placeholder="Genre e.g. Action, Drama">
-<input id="rating" type="number" step="0.1" min="0" max="10" placeholder="Rating /10">
-<input id="director" placeholder="Director">
-<input id="cast" placeholder="Cast">
-<input id="poster" placeholder="Poster image URL">
-<input id="trailer" placeholder="Trailer URL">
-<textarea id="description" placeholder="Movie description"></textarea>
-<button onclick="addMovie()">Add Movie</button>
-</div>
-<p style="color:#888;margin-top:15px;font-size:13px">Note: this demo stores added movies only in this browser session. A real online database can be connected later.</p>
-</section>
-</main>
-
-<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
-<button class="close" onclick="closeModal()">×</button>
-<div class="modal-box"><div class="modal-content" id="modalContent"></div></div>
-</div>
-<footer>© 2026 Get Busy on Friday • Movie discovery website</footer>
-
+<input id="title" placeholder="Movie title"><input id="year" type="number" placeholder="Release year">
+<select id="category"><option>Bollywood</option><option>Hollywood</option><option>South Indian</option><option>Other</option></select><input id="genre" placeholder="Genre">
+<input id="rating" type="number" step=".1" min="0" max="10" placeholder="Rating /10"><input id="director" placeholder="Director">
+<input id="cast_members" placeholder="Cast"><input id="poster_url" placeholder="Poster image URL">
+<input id="trailer_url" placeholder="Trailer URL"><textarea id="description" placeholder="Description"></textarea>
+<button id="saveBtn" class="btn primary full" onclick="saveMovie()">Add Movie</button><button class="btn secondary full" onclick="clearForm()">Clear</button>
+</div><div id="adminList"></div></div>
+</section></main>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="close" onclick="closeModal()">×</button><div id="detail"></div></div></div>
+<footer>© 2026 Get Busy on Friday</footer>
 <script>
-let movies=[
-{name:"Jawan",year:2023,category:"Bollywood",genre:"Action, Thriller",rating:7.0,director:"Atlee",cast:"Shah Rukh Khan, Nayanthara, Vijay Sethupathi",poster:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=Jawan+official+trailer",description:"A high-octane action thriller centered on a man driven by a personal mission and a larger social cause."},
-{name:"3 Idiots",year:2009,category:"Bollywood",genre:"Comedy, Drama",rating:8.4,director:"Rajkumar Hirani",cast:"Aamir Khan, R. Madhavan, Sharman Joshi",poster:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=3+Idiots+official+trailer",description:"Three engineering students navigate friendship, pressure, ambition and the education system."},
-{name:"Interstellar",year:2014,category:"Hollywood",genre:"Sci-Fi, Drama",rating:8.7,director:"Christopher Nolan",cast:"Matthew McConaughey, Anne Hathaway, Jessica Chastain",poster:"https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=Interstellar+official+trailer",description:"Explorers travel through a wormhole in search of a new home for humanity."},
-{name:"The Dark Knight",year:2008,category:"Hollywood",genre:"Action, Crime",rating:9.0,director:"Christopher Nolan",cast:"Christian Bale, Heath Ledger, Aaron Eckhart",poster:"https://images.unsplash.com/photo-1531259683007-016a7b628fc3?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=The+Dark+Knight+official+trailer",description:"Batman faces a criminal mastermind who pushes Gotham and its heroes to their limits."},
-{name:"RRR",year:2022,category:"South Indian",genre:"Action, Drama",rating:7.8,director:"S. S. Rajamouli",cast:"N. T. Rama Rao Jr., Ram Charan, Alia Bhatt",poster:"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=RRR+official+trailer",description:"A fictionalized historical action epic about two revolutionaries and their extraordinary friendship."},
-{name:"Baahubali 2",year:2017,category:"South Indian",genre:"Action, Epic",rating:8.2,director:"S. S. Rajamouli",cast:"Prabhas, Rana Daggubati, Anushka Shetty",poster:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=Baahubali+2+official+trailer",description:"The story continues as Mahendra Baahubali learns the truth about his family and kingdom."},
-{name:"Leo",year:2023,category:"South Indian",genre:"Action, Thriller",rating:7.2,director:"Lokesh Kanagaraj",cast:"Vijay, Trisha, Sanjay Dutt",poster:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=Leo+Vijay+official+trailer",description:"A quiet café owner is pulled into a violent past when dangerous figures recognize him."},
-{name:"Inception",year:2010,category:"Hollywood",genre:"Sci-Fi, Thriller",rating:8.8,director:"Christopher Nolan",cast:"Leonardo DiCaprio, Joseph Gordon-Levitt, Tom Hardy",poster:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=600&q=80",trailer:"https://www.youtube.com/results?search_query=Inception+official+trailer",description:"A specialist in extracting secrets from dreams is offered a chance to erase his past."}
-];
-
-let active="All";
-function renderFilters(){
+const URL="https://tpbirlyhcvabrczpdiov.supabase.co";
+const KEY="sb_publishable_DZA-JqtuGy7jxUbBg8qPLA_RQSwqFSs";
+const db=supabase.createClient(URL,KEY);let movies=[],active="All",editing=null;
 const cats=["All","Bollywood","Hollywood","South Indian","Action","Comedy","Sci-Fi"];
-document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${c===active?'active':''}" onclick="setFilter('${c}')">${c}</button>`).join("");
-}
-function setFilter(c){active=c;renderFilters();renderMovies()}
-function renderMovies(){
-const q=document.getElementById("search").value.toLowerCase();
-const list=movies.filter(m=>{
-const text=(m.name+" "+m.category+" "+m.genre+" "+m.cast).toLowerCase();
-const categoryOK=active==="All"||m.category===active||m.genre.toLowerCase().includes(active.toLowerCase());
-return categoryOK&&text.includes(q);
-});
-document.getElementById("grid").innerHTML=list.length?list.map((m,i)=>`<article class="card" onclick="openMovie(${movies.indexOf(m)})"><img class="poster" src="${m.poster}" alt="${m.name}" onerror="this.src='https://via.placeholder.com/600x900/181818/ffffff?text=No+Poster'"><div class="card-body"><h3>${m.name}</h3><div class="meta">${m.year} • ${m.category}</div><div class="rating">★ ${m.rating}/10</div></div></article>`).join(""):`<div class="empty">No movies found.</div>`;
-}
-function openMovie(i){
-const m=movies[i];
-document.getElementById("modalContent").innerHTML=`<img class="modal-poster" src="${m.poster}" alt="${m.name}"><div><h2>${m.name}</h2><div class="tags">${m.year} • ${m.category} • ${m.genre}</div><div class="rating" style="font-size:18px">★ ${m.rating}/10</div><p><b>Director:</b> ${m.director||"—"}<br><b>Cast:</b> ${m.cast||"—"}</p><p>${m.description||"No description available."}</p>${m.trailer?`<a class="trailer" href="${m.trailer}" target="_blank" rel="noopener">Watch Trailer</a>`:""}</div>`;
-document.getElementById("modal").classList.add("show");
-}
-function closeModal(){document.getElementById("modal").classList.remove("show")}
-function toggleAdmin(){document.getElementById("admin").classList.toggle("show");document.getElementById("admin").scrollIntoView({behavior:"smooth"})}
-function scrollMovies(){document.getElementById("movies").scrollIntoView({behavior:"smooth"})}
-function showHome(){window.scrollTo({top:0,behavior:"smooth"})}
-function addMovie(){
-const get=id=>document.getElementById(id).value.trim();
-if(!get("name")){alert("Please enter movie name.");return}
-movies.unshift({name:get("name"),year:Number(get("year"))||2026,category:get("category"),genre:get("genre")||"Movie",rating:Number(get("rating"))||0,director:get("director"),cast:get("cast"),poster:get("poster")||"https://via.placeholder.com/600x900/181818/ffffff?text=No+Poster",trailer:get("trailer"),description:get("description")});
-["name","year","genre","rating","director","cast","poster","trailer","description"].forEach(id=>document.getElementById(id).value="");
-renderMovies();alert("Movie added successfully!");
-}
-renderFilters();renderMovies();
-</script>
-</body>
-</html>
+function filters(){document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${c==active?"active":""}" onclick="setFilter('${c}')">${c}</button>`).join("")}
+function setFilter(c){active=c;filters();renderMovies()}
+async function load(){let r=await db.from("movies").select("*").order("created_at",{ascending:false});if(r.error){grid.innerHTML=`<p class="notice">${esc(r.error.message)}</p>`;return}movies=r.data||[];renderMovies();renderAdmin()}
+function renderMovies(){let q=search.value.toLowerCase();let a=movies.filter(m=>(active=="All"||m.category==active||(m.genre||"").toLowerCase().includes(active.toLowerCase()))&&(`${m.title} ${m.category||""} ${m.genre||""} ${m.cast_members||""}`.toLowerCase().includes(q)));grid.innerHTML=a.length?a.map(m=>`<article class="card" onclick="showMovie('${m.id}')"><img src="${url(m.poster_url)}" onerror="this.src='https://via.placeholder.com/600x900/181818/fff?text=No+Poster'"><div class="body"><h3>${esc(m.title)}</h3><div class="meta">${m.release_year||"—"} • ${esc(m.category||"")}</div><div class="rating">★ ${m.rating??"—"}/10</div></div></article>`).join(""):"<p class='notice'>No movies found.</p>"}
+function showMovie(id){let m=movies.find(x=>String(x.id)==String(id));if(!m)return;detail.innerHTML=`<div class="detail"><img src="${url(m.poster_url)}"><div><h2>${esc(m.title)}</h2><div class="meta">${m.release_year||"—"} • ${esc(m.category||"")} • ${esc(m.genre||"")}</div><div class="rating">★ ${m.rating??"—"}/10</div><p><b>Director:</b> ${esc(m.director||"—")}<br><b>Cast:</b> ${esc(m.cast_members||"—")}</p><p>${esc(m.description||"No description available.")}</p>${m.trailer_url?`<a class="trailer" href="${url(m.trailer_url)}" target="_blank" rel="noopener">Watch Trailer</a>`:""}</div></div>`;modal.classList.add("show")}
+function closeModal(){modal.classList.remove("show")}
+function openAdmin(){adminPanel.classList.add("show");adminPanel.scrollIntoView({behavior:"smooth"});session()}
+async function session(){let r=await db.auth.getSession();let ok=!!r.data.session;loginBox.style.display=ok?"none":"block";dashboard.style.display=ok?"block":"none";if(ok)load()}
+async function login(){loginMsg.textContent="Logging in...";let r=await db.auth.signInWithPassword({email:email.value.trim(),password:password.value});loginMsg.textContent=r.error?r.error.message:"";if(!r.error)session()}
+async function logout(){await db.auth.signOut();clearForm();session()}
+async function saveMovie(){let x={title:title.value.trim(),release_year:Number(year.value)||null,category:category.value,genre:genre.value.trim(),rating:rating.value===""?null:Number(rating.value),director:director.value.trim(),cast_members:cast_members.value.trim(),poster_url:poster_url.value.trim(),trailer_url:trailer_url.value.trim(),description:description.value.trim()};if(!x.title){adminMsg.textContent="Movie title is required.";return}adminMsg.textContent="Saving...";let r=editing?await db.from("movies").update(x).eq("id",editing):await db.from("movies").insert(x);adminMsg.textContent=r.error?r.error.message:(editing?"Movie updated.":"Movie added.");if(!r.error){clearForm();load()}}
+function editMovie(id){let m=movies.find(x=>String(x.id)==String(id));if(!m)return;editing=m.id;title.value=m.title||"";year.value=m.release_year||"";category.value=m.category||"Bollywood";genre.value=m.genre||"";rating.value=m.rating??"";director.value=m.director||"";cast_members.value=m.cast_members||"";poster_url.value=m.poster_url||"";trailer_url.value=m.trailer_url||"";description.value=m.description||"";saveBtn.textContent="Update Movie"}
+async function deleteMovie(id){if(!confirm("Delete this movie?"))return;let r=await db.from("movies").delete().eq("id",id);if(r.error)adminMsg.textContent=r.error.message;else load()}
+function renderAdmin(){adminList.innerHTML=movies.length?movies.map(m=>`<div class="adminrow"><span>${esc(m.title)} (${m.release_year||"—"})</span><span><button class="btn secondary" onclick="editMovie('${m.id}')">Edit</button><button class="btn primary" onclick="deleteMovie('${m.id}')">Delete</button></span></div>`).join(""):"<p class='notice'>No movies yet.</p>"}
+function clearForm(){editing=null;["title","year","genre","rating","director","cast_members","poster_url","trailer_url","description"].forEach(id=>document.getElementById(id).value="");saveBtn.textContent="Add Movie"}
+function url(v){try{let u=new URL(v||"");return ["https:","http:"].includes(u.protocol)?u.href:"https://via.placeholder.com/600x900/181818/fff?text=No+Poster"}catch{return "https://via.placeholder.com/600x900/181818/fff?text=No+Poster"}}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function moviesTop(){moviesSection.scrollIntoView({behavior:"smooth"})}function topPage(){scrollTo({top:0,behavior:"smooth"})}
+filters();load();db.auth.onAuthStateChange(()=>session());
+</script></body></html>
